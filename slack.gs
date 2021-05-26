@@ -11,6 +11,9 @@ function doPost(e) {
       unfurl_links = (e.parameter.text == "ocg");
       text = drawCard();
       break;
+    case "/次回予告":
+      text = subtitle(e.parameter.text);
+      break;
   }
 
   if (e.parameter.response_url) {
@@ -47,8 +50,57 @@ function summon(filter) {
   let text = value[2];
   if (value[3] != "" && value[4] != "") {
     // cidとカード名が入っていた場合はリンクに置き換え
-    console.log(value);
     text = text.replace(value[4], "<" + detailURL(value[3]) + "|" + value[4] + ">");
+  }
+  console.log(text);
+  return text;
+}
+
+function subtitle(filter) {
+  const s = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("subtitle");
+  const values = s.getRange('A:C').getValues().filter(
+    function (value) {
+      if (filter == undefined) {
+        // フィルタなし
+        return true;
+      } else if (filter != "") {
+        // シリーズ指定
+        return value[0] == filter;
+      } else {
+        // それ以外の文字列の場合もフィルタなし
+        return true;
+      }
+    }
+  );
+
+  const i = Math.floor(Math.random() * values.length);
+  const value = values[i];
+  console.log(value);
+
+  let text = "";
+  const series = value[0];
+  const subtitle = value[2];
+  switch (series) {
+    case "DM":
+      text = "次回、『" + subtitle + "』\nデュエルスタンバイ！";
+      break;
+    case "GX":
+      text = "次回、『" + subtitle + "』";
+      break;
+    case "5D's":
+      text = "次回、遊☆戯☆王5D's 『" + subtitle + "』\nライディングデュエル、アクセラレーション！";
+      break;
+    case "ZEXAL":
+      text = "次回、遊☆戯☆王ZEXAL 『" + subtitle + "』\nかっとビングだ、オレ！";
+      break;
+    case "ARC-V":
+      text = "次回、遊☆戯☆王ARC-V 『" + subtitle + "』\nお楽しみは、これからだ！";
+      break;
+    case "VRAINS":
+      text = "次回、遊戯王VRAINS 『" + subtitle + "』\nInto the VRAINS！";
+      break;
+    default:
+      text = subtitle;
   }
   console.log(text);
   return text;
