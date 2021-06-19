@@ -1,3 +1,35 @@
+function headerArray() {
+  return [
+    "cid",
+    "カード名",
+    "読み",
+    "通常",
+    "効果",
+    "儀式",
+    "融合",
+    "シンクロ",
+    "エクシーズ",
+    "トゥーン",
+    "スピリット",
+    "ユニオン",
+    "デュアル",
+    "チューナー",
+    "リバース",
+    "ペンデュラム",
+    "特殊召喚",
+    "リンク",
+    "通常魔法",
+    "装備魔法",
+    "フィールド魔法",
+    "儀式魔法",
+    "速攻魔法",
+    "永続魔法",
+    "通常罠",
+    "カウンター罠",
+    "永続罠",
+  ];
+}
+
 function fetchCard() {
   const sheetName = "cards";
 
@@ -78,6 +110,7 @@ function parseCard(html) {
 
   let card = {
     "cid": Parser.data(html).from('value="/yugiohdb/card_search.action?ope=2&cid=').to('">').build(),
+    // todo 実体参照に対応
     "カード名": Parser.data(box_card_name).from('<strong>').to('</strong>').build(),
     "読み": Parser.data(box_card_name).from('<span>').to('</span>').build(),
     "カードテキスト": Parser.data(html).from('<dd class="box_card_text">').to('</dd>').build(),
@@ -140,37 +173,6 @@ function parseCard(html) {
   return card;
 }
 
-function headerArray() {
-  return [
-    "cid",
-    "カード名",
-    "読み",
-    "通常",
-    "効果",
-    "儀式",
-    "融合",
-    "シンクロ",
-    "エクシーズ",
-    "トゥーン",
-    "スピリット",
-    "ユニオン",
-    "デュアル",
-    "チューナー",
-    "リバース",
-    "ペンデュラム",
-    "特殊召喚",
-    "リンク",
-    "通常魔法",
-    "装備魔法",
-    "フィールド魔法",
-    "儀式魔法",
-    "速攻魔法",
-    "永続魔法",
-    "通常罠",
-    "カウンター罠",
-    "永続罠",
-  ];
-}
 
 function cardToArray(card) {
   const header = headerArray();

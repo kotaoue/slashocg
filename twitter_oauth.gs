@@ -1,9 +1,5 @@
-function getTwitterOAuthURL() {
-  Logger.log(twitterService().authorize());
-}
-
 function twitterService() {
-  return OAuth1.createService('Twitter')
+  return OAuth1.createService("Twitter")
     .setAccessTokenUrl("https://api.twitter.com/oauth/access_token")
     .setRequestTokenUrl("https://api.twitter.com/oauth/request_token")
     .setAuthorizationUrl("https://api.twitter.com/oauth/authorize")
@@ -16,8 +12,13 @@ function twitterService() {
 function twitterCallback(request) {
   const service = getService();
   if (service.handleCallback(request)) {
-    return HtmlService.createHtmlOutput("🐓");
+    return HtmlService.createHtmlOutput("🐓OK");
   } else {
-    return HtmlService.createHtmlOutput("🐔");
+    return HtmlService.createHtmlOutput("🐔NG");
   }
+}
+
+function twitterAuthorize() {
+  // 一回実行して認証したらそれでOK
+  // Logger.log(twitterService().authorize());
 }

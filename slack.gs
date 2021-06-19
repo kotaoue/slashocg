@@ -14,6 +14,10 @@ function doPost(e) {
     case "/次回予告":
       text = subtitle(e.parameter.text);
       break;
+    case "/デュエルしようぜ":
+      unfurl_links = true;
+      text = beginnersDeck();
+      break;
   }
 
   if (e.parameter.response_url) {
@@ -75,7 +79,6 @@ function subtitle(filter) {
 
   const i = Math.floor(Math.random() * values.length);
   const value = values[i];
-  console.log(value);
 
   let text = "";
   const series = value[0];
@@ -127,16 +130,12 @@ function detailURL(cid) {
   return "https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&request_locale=ja&cid=" + cid;
 }
 
-function drawCard() {
-  const header = headerArray();
-  const s = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("cards");
-
+function beginnersDeck() {
+  const s = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("beginners");
   const min = 2;
   const row = Math.floor(Math.random() * (s.getLastRow() + 1 - min)) + min;
-
-  const cid = s.getRange(row, header.indexOf("cid") + 1).getValue();
-  const name = s.getRange(row, header.indexOf("カード名") + 1).getValue();
-  return drawText(cid, name);
+  const twitterURL = s.getRange(row, 7).getValue();
+  return twitterURL;
 }
 
 function postText(url, text, unfurl_links) {
